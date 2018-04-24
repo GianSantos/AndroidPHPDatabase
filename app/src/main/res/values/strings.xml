@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">AndroidPHP</string>
+    <string name="permission_rationale">You don\'t have permission.</string>
+    <string name="error_invalid_password">Invalid Password</string>
+    <string name="error_invalid_email">Invalid Email</string>
+    <string name="error_field_required">Error: Required Field</string>
+</resources>
