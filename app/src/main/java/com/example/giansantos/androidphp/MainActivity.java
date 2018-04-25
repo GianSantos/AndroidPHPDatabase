@@ -7,6 +7,7 @@ import android.app.LoaderManager.LoaderCallbacks;
 import android.content.CursorLoader;
 import android.content.Intent;
 import android.content.Loader;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
@@ -44,6 +45,7 @@ import static android.Manifest.permission.READ_CONTACTS;
 public class MainActivity extends AppCompatActivity implements LoaderCallbacks<Cursor> {
 
     private static final int REQUEST_READ_CONTACTS = 0;
+    private static final String PREF_FILE_NAME = "UserInfo";
 
     // UI references.
     private AutoCompleteTextView mEmailView;
@@ -204,6 +206,10 @@ public class MainActivity extends AppCompatActivity implements LoaderCallbacks<C
 
                 if(response.equalsIgnoreCase("1")){
                     Toast.makeText(getBaseContext(),"Login Success!!!",Toast.LENGTH_LONG).show();
+                    SharedPreferences userinfo = getSharedPreferences(PREF_FILE_NAME, MODE_PRIVATE);
+                    SharedPreferences.Editor edit = userinfo.edit();
+                    edit.putString("username", email);
+                    edit.apply();
                 }else if(response.equalsIgnoreCase("0")){
                     Toast.makeText(getBaseContext(),"Invalid username or password",
 
