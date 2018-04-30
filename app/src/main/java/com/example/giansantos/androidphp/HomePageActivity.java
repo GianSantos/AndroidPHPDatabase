@@ -1,5 +1,6 @@
 package com.example.giansantos.androidphp;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -8,6 +9,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -31,6 +33,7 @@ public class HomePageActivity extends AppCompatActivity{
     private static final String PREF_FILE_NAME = "UserInfo";
     private TextView likes_view;
     private TextView followers_view;
+    private EditText follower;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,8 +41,10 @@ public class HomePageActivity extends AppCompatActivity{
 
         Button most_likes = (Button) findViewById(R.id.most_likes);
         Button most_followers = (Button) findViewById(R.id.most_followers);
+        Button follow = (Button) findViewById(R.id.follow);
         likes_view = (TextView) findViewById(R.id.likes_view);
         followers_view = (TextView) findViewById(R.id.followers_view);
+        follower = (EditText) findViewById(R.id.follower);
         most_likes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -54,7 +59,16 @@ public class HomePageActivity extends AppCompatActivity{
             }
         });
 
+        follow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                query8();
+            }
+        });
+
         query6();
+
+
     }
 
     private void query1() {
@@ -98,12 +112,9 @@ public class HomePageActivity extends AppCompatActivity{
                 Log.d("loco", "Login Response: " + response);
                 try {
                     JSONArray obj = new JSONArray(response);
-                    Log.d("HI", "BYe");
-                    Log.d("ercy", obj.toString());
                     //JSONArray jArray = obj.getJSONArray("messages");
                     for(int i = 0; i < obj.length(); i++){
                         JSONObject messagesArray = obj.getJSONObject(i);
-                        Log.d("fuck", messagesArray.toString());
                         messages.add(new Messages(messagesArray.getString("username"), messagesArray.getString("body"), messagesArray.getString("date")));
                     }
 
@@ -142,28 +153,60 @@ public class HomePageActivity extends AppCompatActivity{
         // Adding request to request queue
 
         App.getInstance().addToRequestQueue(strReq);
-//        JsonArrayRequest jsonReq = new JsonArrayRequest(Request.Method.GET, AppConfig.URL_Query6, new Response.Listener<JSONArray>() {
-//            @Override
-//            public void onResponse(JSONArray response) {
-//                try {
-//                    for(int i = 0; i < response.length(); i++){
-//                        JSONObject obj = response.getJSONObject(i);
-//                        messages.add(new Messages(obj.getString("username"), obj.getString("body"), obj.getString("send_time")));
-//                    }
-//
-//                } catch (JSONException e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//        }, new Response.ErrorListener() {
-//            @Override
-//            public void onErrorResponse(VolleyError error) {
-//                Log.e(App.TAG, "Query 6 Error: " + error.getMessage());
-//            }
-//        });
+
         MessagesAdapter adapter = new MessagesAdapter(this, messages);
         ListView listview = (ListView) findViewById(R.id.listview);
         listview.setAdapter(adapter);
-//        App.getInstance().addToRequestQueue(jsonReq);
+    }
+
+    private void query8(){
+        StringRequest strReq = new StringRequest(Request.Method.POST,
+                AppConfig.URL_Query8, new Response.Listener<String>() {
+
+            @Override
+
+            public void onResponse(String response) {
+                Log.d("loco", "Login Response: " + response);
+                String result = response.toString();
+                if(result.equalsIgnoreCase("Followed!")){
+                    Toast.makeText(getBaseContext(), "User has been followed!", Toast.LENGTH_SHORT).show();
+                } else if(result.equalsIgnoreCase("Unfollowed!")){
+                    Toast.makeText(HomePageActivity.this, "User has been unfollowed!", Toast.LENGTH_SHORT).show();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+
+            @Override
+
+            public void onErrorResponse(VolleyError error) {
+
+                Log.e(App.TAG, "Login Error: " + error.getMessage());
+            }
+        }) {
+
+            @Override
+
+            protected Map<String, String> getParams() {
+                // Posting parameters to login url
+
+                SharedPreferences userinfo = getSharedPreferences(PREF_FILE_NAME, MODE_PRIVATE);
+                String username = userinfo.getString("username", "");
+                Log.d("Username", username);
+                String mFollower = follower.getText().toString();
+                Log.d("Follower", mFollower);
+
+                Map<String, String> params = new HashMap<>();
+                params.put("username", username);
+                params.put("follower", mFollower);
+
+                return params;
+            }
+        };
+
+        // Adding request to request queue
+
+        App.getInstance().addToRequestQueue(strReq);
+
     }
 }

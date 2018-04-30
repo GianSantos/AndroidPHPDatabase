@@ -11,7 +11,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:text="Post with most likes" />
+        android:text="Post with most likes"
+        android:layout_alignParentLeft="true" />
 
     <Button
         android:id="@+id/most_followers"
@@ -20,26 +21,61 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_marginTop="79dp"
-        android:text="User with most followers" />
+        android:text="User with most followers"
+        android:layout_alignParentLeft="true" />
 
     <TextView
         android:id="@+id/likes_view"
         android:layout_width="189dp"
         android:layout_height="51dp"
         android:layout_alignParentTop="true"
-        android:layout_toEndOf="@+id/most_likes" />
+        android:layout_toEndOf="@+id/most_likes"
+        android:layout_toRightOf="@+id/most_likes" />
 
     <TextView
         android:id="@+id/followers_view"
         android:layout_width="185dp"
         android:layout_height="54dp"
         android:layout_alignTop="@+id/most_followers"
-        android:layout_toEndOf="@+id/most_likes" />
+        android:layout_toEndOf="@+id/most_likes"
+        android:layout_toRightOf="@+id/most_likes" />
 
     <ListView
         android:id="@+id/listview"
         android:layout_width="match_parent"
-        android:layout_height="316dp"
+        android:layout_height="271dp"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true" />
+
+    <Button
+        android:id="@+id/follow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="145dp"
+        android:text="Follow/Unfollow"
+        android:layout_alignParentLeft="true" />
+
+    <EditText
+        android:id="@+id/follower"
+        android:layout_width="162dp"
+        android:layout_height="45dp"
+        android:layout_alignTop="@+id/follow"
+        android:layout_toEndOf="@+id/follow"
+        android:layout_toRightOf="@+id/follow"
+        android:hint="Enter Username"
+        android:maxLines="1"
+        android:singleLine="true"
+        android:inputType="text" />
+
+    <TextView
+        android:id="@+id/Messages"
+        android:layout_width="171dp"
+        android:layout_height="35dp"
+        android:layout_above="@+id/listview"
+        android:layout_alignParentStart="true"
+        android:text="Messages"
+        android:layout_alignParentLeft="true" />
 </RelativeLayout>
